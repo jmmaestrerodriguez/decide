@@ -1,4 +1,6 @@
 from django.views.generic import TemplateView
+from datetime import datetime
+import django_excel as excel
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError, ObjectDoesNotExist, PermissionDenied
 from rest_framework import generics
@@ -97,3 +99,26 @@ class CensusView(TemplateView):
             raise Http404
 
         return context
+
+####################################################################################################
+def ExportToCsv(request):
+    export = []
+    export.append([
+        'date',
+        'group',
+        'server',])
+
+    # Se obtienen los datos de la tabla o model y se agregan al array
+    results = []
+    i=1
+    for i in range(1, 10):
+        export.append(["1", "2", "3"])
+
+    today = datetime.now()
+    strToday = today.strftime("%Y%m%d")
+
+    sheet = excel.pe.Sheet(export)
+
+    return excel.make_response(sheet, "csv", file_name="respuesta-"+strToday+".csv")
+
+
